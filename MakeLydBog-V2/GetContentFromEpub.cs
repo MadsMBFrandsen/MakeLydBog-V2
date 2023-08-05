@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,8 +25,8 @@ namespace MakeLydBog_V2
             List<Chapter> chapters = new List<Chapter>();
             //List<string> chapters = new List<string>();
 
-
-
+            // Add number til title
+            int TitleCountNumber = 1;
 
             foreach (EpubLocalTextContentFile textContentFile in epubBook.ReadingOrder)
             {
@@ -37,31 +38,72 @@ namespace MakeLydBog_V2
                 bool b = !IsExcludedFile(fileName, textContentFile.Content);
                 //Console.WriteLine(b);
                 string chapterTitle = ExtractChapterTitle(textContentFile.Content);
-                bool ContainsANumber = Regex.IsMatch(chapterTitle, @"\d");
-                string chapterTitleLower = chapterTitle.ToLower();
+
+                //Title is "" if Epub Is From sufficientvelocity
+                if (chapterTitle == "")
+                {
+                    HtmlDocument htmlDoc = new HtmlDocument();
+                    htmlDoc.LoadHtml(content);
+
+                    HtmlNode h1Node = htmlDoc.DocumentNode.SelectSingleNode("//h1");
+                    chapterTitle = h1Node?.InnerHtml;
+                    //<h1>Negima - Chapter 1</h1>
+                    //find first instans of chapter 
+                }
+                bool ContainsANumber = false;
+                string chapterTitleLower = "patreon";
+                try
+                {
+                    ContainsANumber = Regex.IsMatch(chapterTitle, @"\d");
+                    chapterTitleLower = chapterTitle.ToLower();
+                }
+                catch (Exception)
+                {
+
+                    Console.WriteLine("Error on " + chapterTitle);
+                }
+
+
                 if (ContainsANumber)
                 {
                     if (!chapterTitleLower.Contains("amazon kindel") || !chapterTitleLower.Contains("not a chapter") ||
                         !chapterTitleLower.Contains("patreon") || !chapterTitleLower.Contains("salvos book") ||
                         !chapterTitleLower.Contains("is now available") || !chapterTitleLower.Contains("last chance to read all"))//
                     {
-                        chapterTitle = ExtractChapterTitle(textContentFile.Content);
+                        //chapterTitle = ExtractChapterTitle(textContentFile.Content);
+
                         //chapterTitle = RemoveSpecialCharacters(chapterTitle);
                         //chapterTitle = Regex.Replace(chapterTitle, @"[?!%&]", "");
                         string chapterContent = CleanHtmlTags(textContentFile.Content);
                         chapterContent = chapterContent.Trim();
+
                         Console.WriteLine(chapterTitle);
 
-                        string result = chapterContent.Replace(chapterTitle, string.Empty, StringComparison.OrdinalIgnoreCase);
+                        if (chapterTitle != "")
+                        {
+                            string result = chapterContent.Replace(chapterTitle, string.Empty, StringComparison.OrdinalIgnoreCase);
+                        }
+
+
+                        //int chapterTitleNumber1 = chapterTitle.Length;
+                        //string chapterTitlestring = chapterContent.Substring(0, chapterTitleNumber1);
+
 
                         chapterTitle = RemoveSpecialCharacters(chapterTitle);
 
-                        chapterContent = chapterTitle + result;
+
+                        //if (chapterTitle == chapterTitlestring)
+                        //{
+                        //    //if there is multibil titels in the files
+                        //    //chapterContent = chapterTitle + result;
+                        //}
+
+
                         // Add chapter content to the list
                         Chapter chapters1 = new Chapter();
-                        chapters1.Title = chapterTitle;
+                        chapters1.Title = "Nr " + TitleCountNumber + ": " + chapterTitle;
                         chapters1.Content = chapterContent;
-
+                        TitleCountNumber++;
                         chapters.Add(chapters1);
                         //chapters.Add(chapterContent);
                     }

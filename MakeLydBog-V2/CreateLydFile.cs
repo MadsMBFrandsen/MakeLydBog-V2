@@ -38,9 +38,6 @@ namespace MakeLydBog_V2
                     b = true;
                 }
 
-
-
-
             }
 
             return b;
