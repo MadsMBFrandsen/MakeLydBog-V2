@@ -72,7 +72,7 @@ namespace MakeLydBog_V2
                         if (key == "y")
                         {
                             //chapters1.Title = "Nr " + TitleCountNumber + ": " + chapterTitle;
-                            Title = "Nr_" + count + " " + Title;
+                            Title = "Chapter_" + count + " " + Title;
                             count++;
                         }
 
@@ -126,6 +126,15 @@ namespace MakeLydBog_V2
             {
                 istrue = false;
             }
+            if (titletemp.Contains("nav"))
+            {
+                istrue = false;
+            }
+            if (titletemp.Contains("introduction"))
+            {
+                istrue = false;
+            }
+            
             return istrue;
         }
 

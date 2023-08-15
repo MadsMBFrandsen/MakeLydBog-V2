@@ -3,7 +3,8 @@
 
 string StoryName = "Making Waves";
 StoryName = "Azarinth Healer - Rhaegar";
-StoryName = "A Mother Goo in a Grimdark World";
+StoryName = "Naruto Tamer of the XAntibody";
+StoryName = "The Game Must Go On";
 //Nanomancer Reborn - I've Become A Snow Girl
 //Epic of Caterpillar
 //Itai no wa Iya nanode Bōgyo-Ryoku ni Kyokufuri Shitai to Omoimasu
@@ -19,7 +20,8 @@ StoryName = "A Mother Goo in a Grimdark World";
 
 string EpubToExtratFileName = "Making_Waves_by_Vimesenthusiast-7JFqWVfu";
 EpubToExtratFileName = "Azarinth Healer - Rhaegar";
-EpubToExtratFileName = "A_Mother_Goo_in_a_Grimdark_World_Grey_Goo_SI_X_Warhammer_40k";
+EpubToExtratFileName = "Naruto_Tamer_of_the_XAntibody_by_KitsuneDragon-8qkewete";
+EpubToExtratFileName = "The_Game_Must_Go_On_by_crossedge-byiu1SNR";
 
 //Am_I_Smart_by_Penguin-sa-oKVKU2pf
 
