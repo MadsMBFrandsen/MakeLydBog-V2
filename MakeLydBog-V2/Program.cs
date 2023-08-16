@@ -1,8 +1,5 @@
-﻿
+﻿using MakeLydBog_V2;
 
-
-using MakeLydBog_V2;
-using System.Security.Cryptography.X509Certificates;
 
 string StoryName = "Salvos";
 
@@ -13,12 +10,18 @@ string EpubToExtratFileName = "Salvos (Last chance to read all - MelasDelta";
 //Paths
 //-----MainPath
 string StartPath = @"D:\Books\";
+StartPath = @"C:\Users\mads3170\OneDrive\Books\SoundBooks";
 //-----SubPaths
 string EpubFilePath = StartPath + @"Epub\";
-string ExtraktionPath = StartPath + @"EpubExtrated\";
-//string TxtExtratedFolder = StartPath + @"TextFilles\";
+//string ExtraktionPath = StartPath + @"EpubExtrated\";
 string TextFilePath = StartPath + @"TextFilles\";
 string LydBogPath = StartPath + @"SoundBooks\";
+
+//-----Create Folders
+Directory.CreateDirectory(StartPath);
+Directory.CreateDirectory(EpubFilePath);
+Directory.CreateDirectory(TextFilePath);
+Directory.CreateDirectory(LydBogPath);
 
 
 //Instanses
