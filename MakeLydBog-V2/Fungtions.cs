@@ -10,7 +10,8 @@ namespace MakeLydBog_V2
     {
         public void GetTimeLeft(int totalSeconds)
         {
-            totalSeconds = totalSeconds / 100;
+            
+            //totalSeconds = totalSeconds;
             int hours = totalSeconds / 3600;
             int minutes = (totalSeconds % 3600) / 60;
             int seconds = (totalSeconds % 3600) % 60;
