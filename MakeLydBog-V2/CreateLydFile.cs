@@ -16,7 +16,7 @@ namespace MakeLydBog_V2
     public class CreateLydFile
     {
 
-        public bool CreateSoundFile(string LydBogPath, Chapter chapter, string Storyname, string path)
+        public bool CreateSoundFile(/*string LydBogPath,*/ Chapter chapter, string Storyname, string path)
         {
             Directory.CreateDirectory(path + Storyname);
             bool b = false;
@@ -25,14 +25,23 @@ namespace MakeLydBog_V2
                 //set some settings
                 reader.Volume = 100;
                 reader.Rate = 0; //medium
+                /*reader.SelectVoice();*/
+
+                foreach (var v in reader.GetInstalledVoices().Select(v => v.VoiceInfo))
+                {
+                    Console.WriteLine("Name:{0}, Gender:{1}, Age:{2}",
+                      v.Description, v.Gender, v.Age);
+                }
+
 
 
                 MemoryStream ms = new MemoryStream();
                 reader.SetOutputToWaveStream(ms);
-
+                
 
                 reader.Speak(chapter.Content);
-                if (!File.Exists(LydBogPath+Storyname + @"\" + chapter.Title + ".mp3"))
+                //if (!File.Exists(LydBogPath+Storyname + @"\" + chapter.Title + ".mp3"))         
+                if (!File.Exists(path + Storyname + @"\" + chapter.Title + ".mp3"))
                 {
                     ConvertWavStreamToMp3File(ref ms, path + Storyname + @"\" + chapter.Title + ".mp3");
                     b = true;

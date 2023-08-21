@@ -24,8 +24,8 @@ namespace MakeLydBog_V2
 
             List<Chapter> chapters = new List<Chapter>();
 
-            Console.WriteLine($"Title: {epubBook.Title}");
-            Console.WriteLine($"Author: {epubBook.Author}");
+            Console.WriteLine($"         Title: {epubBook.Title}");
+            Console.WriteLine($"         Author: {epubBook.Author}");
 
             int Number = 0;
             bool IsTrue = false;
@@ -33,7 +33,7 @@ namespace MakeLydBog_V2
             string key = string.Empty;
             foreach (EpubLocalTextContentFile item in epubBook.ReadingOrder)
             {
-                Console.WriteLine("Title");
+                Console.WriteLine("         Title");
                 string Title = GetTitleFromEpub(item.Key);
 
 
@@ -43,8 +43,8 @@ namespace MakeLydBog_V2
                 {
                     if (Number == 0 && IsTrue == false)
                     {
-                        Console.WriteLine(Title);
-                        Console.WriteLine("Skriv fra hvor Title begynder i tal");
+                        Console.WriteLine("         " + Title);
+                        Console.WriteLine("         Skriv fra hvor Title begynder i tal");
                         //While title is not a number (Char.IsDigit())
                         try
                         {
@@ -53,19 +53,19 @@ namespace MakeLydBog_V2
                         }
                         catch (Exception)
                         {
-                            Console.WriteLine("Error on Title select");
+                            Console.WriteLine("         Error on Title select");
                             throw;
                         }
                     }
 
                     Title = Title.Substring(Number);
-                    Console.WriteLine("Title = " + Title);
+                    Console.WriteLine("         Title = " + Title);
                     try
                     {
-                        
+
                         if (key == "")
                         {
-                            Console.WriteLine("Does the title need a number (y/n)");
+                            Console.WriteLine("         Does the title need a number (y/n)");
                             key = Console.ReadLine();
                         }
 
@@ -75,16 +75,14 @@ namespace MakeLydBog_V2
                             Title = "Chapter_" + count + " " + Title;
                             count++;
                         }
-
                     }
                     catch (Exception)
                     {
-
                         throw;
                     }
 
-                    Console.WriteLine(Title);
-                    Console.WriteLine("Content");
+                    Console.WriteLine("         " + Title);
+                    Console.WriteLine("         Content");
                     string Content = GetContentFromEpub(item.Content);
                     //Console.WriteLine(Content);
 
@@ -98,12 +96,12 @@ namespace MakeLydBog_V2
                 else
                 {
                     Console.WriteLine(Title);
-                    Console.WriteLine("Chapter is not a chapter");
+                    Console.WriteLine("         Chapter is not a chapter");
                 }
             }
 
-            //PrintTableOfContents();
-            Console.WriteLine("Done With Reading Epub");
+
+            Console.WriteLine("         Done With Reading Epub");
 
             return chapters;
         }
@@ -134,7 +132,7 @@ namespace MakeLydBog_V2
             {
                 istrue = false;
             }
-            
+
             return istrue;
         }
 
@@ -147,9 +145,21 @@ namespace MakeLydBog_V2
             return title;
         }
         internal string GetContentFromEpub(string EpubContent)
-        {
+        { //
             string content = string.Empty;
             content = CleanHtmlTags(EpubContent);
+            List<string> tempcontentList = Regex.Split(content, @"(?<=[.])").ToList();
+            List<string> tempcontentList2 = new List<string>();
+            foreach (string item in tempcontentList)
+            {
+                if (item.Length >=2)
+                {
+                    string st = item.Trim(); ;
+                    tempcontentList2.Add(item);
+                }
+            }
+            string str = String.Join("\n", tempcontentList2);
+            content = str;
             return content;
         }
 

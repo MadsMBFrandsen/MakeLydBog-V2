@@ -11,7 +11,7 @@ namespace MakeLydBog_V2
         public bool CreateFile(Chapter Chapter, string Path, string StoryName)
         {
             bool b = false;
-            
+
             Directory.CreateDirectory(Path + StoryName);
 
             string FullTestFilePath = Path + StoryName + "\\" + Chapter.Title + ".txt";
@@ -24,9 +24,7 @@ namespace MakeLydBog_V2
 
                 using (StreamWriter sw = File.CreateText(FullTestFilePath))
                 {
-
                     sw.WriteLine(Chapter.Content);
-
                 }
             }
             return b;

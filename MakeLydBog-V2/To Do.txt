@@ -1,9 +1,24 @@
-﻿
+﻿--To Do List--
+---***---
+---***---
+---***---
+[x] Lav så der kan tilføjes nummer til chapter titlen 
 
 
 
-Lav så der kan tilføjes nummer til chapter titlen 
 
 
 
 
+
+
+
+
+
+//Nanomancer Reborn - I've Become A Snow Girl
+//Invincible
+//Hybrid Hive Eat Shard
+//Haze Gray
+//Distance Learning for Fun and Profit
+//Death March kara Hajimaru Isekai Kyousoukyoku
+//As Long as You Have the [Shop] Skill
