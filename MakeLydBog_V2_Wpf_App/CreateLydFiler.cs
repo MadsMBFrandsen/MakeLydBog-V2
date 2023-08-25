@@ -1,22 +1,19 @@
-﻿using NAudio.Lame;
-using NAudio.Wave;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Speech.Synthesis;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using MakeLydBog_V2_Wpf_App.Models;
+using System.Speech.Synthesis;
+using NAudio.Lame;
+using NAudio.Wave;
 
-namespace MakeLydBog_V2
+namespace MakeLydBog_V2_Wpf_App
 {
-    public class CreateLydFile
+    class CreateLydFiler
     {
-
-        public bool CreateSoundFile(/*string LydBogPath,*/ Chapter chapter, string Storyname, string path)
+        public bool CreateSoundFile(Chapter chapter, string Storyname, string path)
         {
             Directory.CreateDirectory(path + Storyname);
             bool b = false;
@@ -38,7 +35,7 @@ namespace MakeLydBog_V2
 
                 MemoryStream ms = new MemoryStream();
                 reader.SetOutputToWaveStream(ms);
-                
+
 
                 reader.Speak(chapter.Content);
                 //if (!File.Exists(LydBogPath+Storyname + @"\" + chapter.Title + ".mp3"))         
