@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using VersOne.Epub;
 using MakeLydBog_V2_Wpf_App.Models;
 using System.IO;
+using System.ComponentModel;
 
 namespace MakeLydBog_V2_Wpf_App
 {
     class Fungtions
     {
+        public int StartNumber;
+        public int RealNumber;
         public void GetTimeLeft(int totalSeconds)
         {
 
@@ -46,12 +49,23 @@ namespace MakeLydBog_V2_Wpf_App
                 createTxtFiles.CreateFile(item, TextFilePath, StoryName);
             }
         }
+        public async Task<int> GetStartNumberAsync()
+        {
+            return StartNumber;
+        }
+        public async Task<int> GetRealNumberAsync()
+        {
+            return RealNumber;
+        }
         public void MakeMp3File(List<Chapter> ListOfChapters, int ListOfChaptersCount, string LydBogPath, string StoryName)
         {
             CreateLydFiler createLydFile = new CreateLydFiler();
 
             int number = ListOfChapters.Count;
             int number1 = ListOfChapters.Count;
+            StartNumber = number;
+            RealNumber = number1;
+
             DateTime dateTime = DateTime.Now;
             Console.WriteLine("         Start Tid    =" + dateTime);
             Console.WriteLine("         ---------------------------");
@@ -60,6 +74,7 @@ namespace MakeLydBog_V2_Wpf_App
                 Console.WriteLine("         Title    " + item.Title);
                 Console.WriteLine("         Start Number      " + number);
                 number1--;
+                RealNumber = number1;
                 Console.WriteLine("         Er nu             " + number1 + " Tilbage");
                 ListOfChaptersCount = ListOfChaptersCount - item.Content.Length;
                 Console.WriteLine("         Time Left");
@@ -98,7 +113,13 @@ namespace MakeLydBog_V2_Wpf_App
             }
             return true;
         }
-
+        public void OneChapter(List<Chapter> ListOfChapters, string TextFilePath, string LydBogPath, string StoryName)
+        {
+            int ListOfChaptersCount = ListOfChaptersCountMetode(ListOfChapters);
+            MakeTxtFile(ListOfChapters, TextFilePath, StoryName);
+            MakeMp3File(ListOfChapters, ListOfChaptersCount, LydBogPath, StoryName);
+            End();
+        }
 
         public void End()
         {

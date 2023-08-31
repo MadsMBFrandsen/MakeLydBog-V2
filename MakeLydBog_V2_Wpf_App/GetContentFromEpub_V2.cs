@@ -18,7 +18,8 @@ namespace MakeLydBog_V2_Wpf_App
         public List<Chapter> GetContentFromEpub_V2Metode(string BaseEpubFilePath, string EpubFilename)
         {
             List<List<string>> contentList = new List<List<string>>();
-            string epubFilePath = BaseEpubFilePath + EpubFilename + ".Epub";
+            //string epubFilePath = BaseEpubFilePath + EpubFilename + ".Epub";          
+            string epubFilePath = EpubFilename;
             EpubBook epubBook = EpubReader.ReadBook(epubFilePath);
 
             List<Chapter> chapters = new List<Chapter>();
@@ -40,22 +41,22 @@ namespace MakeLydBog_V2_Wpf_App
 
                 if (ForbiddenTitles(titletemp))
                 {
-                    if (Number == 0 && IsTrue == false)
-                    {
-                        Console.WriteLine("         " + Title);
-                        Console.WriteLine("         Skriv fra hvor Title begynder i tal");
-                        //While title is not a number (Char.IsDigit())
-                        try
-                        {
-                            Number = Convert.ToInt32(Console.ReadLine());
-                            IsTrue = true;
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("         Error on Title select");
-                            throw;
-                        }
-                    }
+                    //if (Number == 0 && IsTrue == false)
+                    //{
+                    //    Console.WriteLine("         " + Title);
+                    //    Console.WriteLine("         Skriv fra hvor Title begynder i tal");
+                    //    //While title is not a number (Char.IsDigit())
+                    //    try
+                    //    {
+                    //        Number = Convert.ToInt32(Console.ReadLine());
+                    //        IsTrue = true;
+                    //    }
+                    //    catch (Exception)
+                    //    {
+                    //        Console.WriteLine("         Error on Title select");
+                    //        throw;
+                    //    }
+                    //}
 
                     Title = Title.Substring(Number);
                     Console.WriteLine("         Title = " + Title);
