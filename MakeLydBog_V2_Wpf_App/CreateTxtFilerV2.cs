@@ -13,7 +13,7 @@ namespace MakeLydBog_V2_Wpf_App
 
             Directory.CreateDirectory(Path + StoryName);
 
-            string FullTestFilePath = Path + StoryName + "\\" + Chapter.Title + ".txt";
+            string FullTestFilePath = Path + StoryName + @"\" + Chapter.Title + ".txt";
 
             if (!File.Exists(FullTestFilePath))
             {

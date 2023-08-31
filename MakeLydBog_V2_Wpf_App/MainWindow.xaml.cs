@@ -134,7 +134,7 @@ namespace MakeLydBog_V2_Wpf_App
                 else
                 {
                     Epub epub = new Epub();
-                    epub.StoryName = TBStoryName.Text;
+                    epub.StoryName = TBStoryName.Text.Trim();
                     epub.EpubToExtratFileName = TBEpubFilePath.Text;
 
                     dispatcherTimer.Tick += new EventHandler(OnTimerEvent);
@@ -252,8 +252,8 @@ namespace MakeLydBog_V2_Wpf_App
 
             if (epubList.Count == 0)
             {
-                epubFilePath = TBEpubFilePath.Text;
-                Storyname = TBStoryName.Text;
+                epubFilePath = TBEpubFilePath.Text.Trim();
+                Storyname = TBStoryName.Text.Trim();
                 LVEpubFilePath.Items.Add(epubFilePath);
                 LVStoryname.Items.Add(Storyname);
                 Epub epub = new Epub();
