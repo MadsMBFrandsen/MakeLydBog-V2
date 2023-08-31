@@ -4,31 +4,33 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-
+using System.Windows.Threading;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace MakeLydBog_V2_Wpf_App
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         GetContentFromEpub_V2 epub_V2;
         Fungtions fun;
-        string epubFilePath;
-        string txtFilePath;
-        string soundFilePath;
-        string Storyname;
+        FungtionsV2 funV2;
+        string epubFilePath = string.Empty;
+        string txtFilePath = string.Empty;
+        string soundFilePath = string.Empty;
+        string Storyname = string.Empty;
         List<Epub> epubList;
+        List<Chapter> ListOfChapters;
+
 
         int StartNumber = 0;
         int RealNumber = 0;
+        string ChapterName = "";
+        string TimeLeft = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -41,11 +43,8 @@ namespace MakeLydBog_V2_Wpf_App
             //Instanses
             epub_V2 = new GetContentFromEpub_V2();
             fun = new Fungtions();
+            funV2 = new FungtionsV2();
             epubList = new List<Epub>();
-
-
-
-
         }
         private void CreateFilePaths()
         {
@@ -53,105 +52,135 @@ namespace MakeLydBog_V2_Wpf_App
             //Directory.CreateDirectory(epubFilePath);
             Directory.CreateDirectory(txtFilePath);
             Directory.CreateDirectory(soundFilePath);
+
         }
 
-        private void BtnStart_Click(object sender, RoutedEventArgs e)
+        private async void BtnStart_Click(object sender, RoutedEventArgs e)
         {
-            BtnStart.IsEnabled = false;
-            BtnEpubPath.IsEnabled = false;
-            BtnTxtPath.IsEnabled = false;
-            BtnSoundPath.IsEnabled = false;
-            BtnAddToList.IsEnabled = false;
-
-            TBEpubFilePath.IsEnabled = false;
-            TBTextPath.IsEnabled = false;
-            TBSoundPath.IsEnabled = false;
-            TBStoryName.IsEnabled = false;
-            TBChapterName.IsEnabled = false;
-
-            CBIsAList.IsEnabled = false;
-            CBOneChapter.IsEnabled = false;
-            CreateFilePaths();
-
-            //string TextFieldUserName = Request.Form["TextFieldUserName"].ToString();
-            if (CBOneChapter.IsChecked == true)
+            if (TBEpubFilePath.Text == "Epub File Path" || TBSoundPath.Text == "Txt File Path" || TBSoundPath.Text == "Sound File Path" || TBStoryName.Text == "Story Name")
             {
-                string txtcontent = TBContent.Text;
-                string txttitle = TBChapterName.Text;
-                Chapter chapter = new Chapter();
-                chapter.Title = txttitle;
-                chapter.Content = txtcontent;
-                List<Chapter> ListOfChapters = new List<Chapter>();
-                ListOfChapters.Add(chapter);
-                fun.OneChapter(ListOfChapters, txtFilePath, soundFilePath, Storyname);
-            }
-            if (CBIsAList.IsChecked == true)
-            {
-                dispatcherTimer.Tick += new EventHandler(OnTimerEvent);
-                dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
-                dispatcherTimer.Start();
-
-                fun.ListOfEpubs(epubList, epubFilePath, txtFilePath, soundFilePath);
-
-                //dispatcherTimer.Stop();
+                if (TBEpubFilePath.Text == "Epub File Path")
+                {
+                    LError.Content = "Needs A Epub File Path";
+                }
+                if (TBTextPath.Text == "Txt File Path")
+                {
+                    LError.Content = "Needs A Txt File Path";
+                }
+                if (TBSoundPath.Text == "Sound File Path")
+                {
+                    LError.Content = "Needs A Sound File Path";
+                }
+                if (TBStoryName.Text == "Story Name")
+                {
+                    LError.Content = "Needs A Story Name";
+                }
+                LError.BorderBrush = System.Windows.Media.Brushes.Red;
             }
             else
             {
-                Epub epub = new Epub();
-                epub.StoryName = TBStoryName.Text;
-                epub.EpubToExtratFileName = TBEpubFilePath.Text;
+                LError.Content = "Errors";
+                LError.BorderBrush = System.Windows.Media.Brushes.Black;
+                BtnStart.IsEnabled = false;
+                BtnEpubPath.IsEnabled = false;
+                BtnTxtPath.IsEnabled = false;
+                BtnSoundPath.IsEnabled = false;
+                BtnAddToList.IsEnabled = false;
 
-                dispatcherTimer.Tick += new EventHandler(OnTimerEvent);
-                dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
-                dispatcherTimer.Start();
-                                
+                TBEpubFilePath.IsEnabled = false;
+                TBTextPath.IsEnabled = false;
+                TBSoundPath.IsEnabled = false;
+                TBStoryName.IsEnabled = false;
+                TBChapterName.IsEnabled = false;
 
-                epubList.Clear();
-                epubList.Add(epub);
-                fun.ListOfEpubs(epubList, epubFilePath, txtFilePath, soundFilePath);
+                CBIsAList.IsEnabled = false;
+                CBOneChapter.IsEnabled = false;
+
+                CreateFilePaths();
+                string NeedANumber = string.Empty;
+                string StartOn = string.Empty;
+
+                if (CBNeedANumber.IsChecked == true)
+                {
+
+                }
+                if (CBStartOn.IsChecked == true)
+                {
+
+                }
+
+                if (CBOneChapter.IsChecked == true)
+                {
+                    string txtcontent = TBContent.Text;
+                    string txttitle = TBChapterName.Text;
+                    Chapter chapter = new Chapter();
+                    chapter.Title = txttitle;
+                    chapter.Content = txtcontent;
+                    List<Chapter> ListOfChapters = new List<Chapter>
+                    {
+                        chapter
+                    };
+                    await funV2.OneChapterAsync(ListOfChapters, txtFilePath, soundFilePath, Storyname);
+                }
+
+                if (CBIsAList.IsChecked == true)
+                {
+                    dispatcherTimer.Tick += new EventHandler(OnTimerEvent);
+                    dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+                    dispatcherTimer.Start();
+
+                    await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath);
+                }
+                else
+                {
+                    Epub epub = new Epub();
+                    epub.StoryName = TBStoryName.Text;
+                    epub.EpubToExtratFileName = TBEpubFilePath.Text;
+
+                    dispatcherTimer.Tick += new EventHandler(OnTimerEvent);
+                    dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
+                    dispatcherTimer.Start();
+
+                    epubList.Clear();
+                    epubList.Add(epub);
+                    await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath);
+                }
+
+                dispatcherTimer.Stop();
+
+                BtnStart.IsEnabled = true;
+                BtnEpubPath.IsEnabled = true;
+                BtnTxtPath.IsEnabled = true;
+                BtnSoundPath.IsEnabled = true;
+                BtnAddToList.IsEnabled = true;
+
+                TBEpubFilePath.IsEnabled = true;
+                TBTextPath.IsEnabled = true;
+                TBSoundPath.IsEnabled = true;
+                TBStoryName.IsEnabled = true;
+                TBChapterName.IsEnabled = true;
+
+                CBIsAList.IsEnabled = true;
+                CBOneChapter.IsEnabled = true;
             }
-
-            dispatcherTimer.Stop();
-
-            BtnStart.IsEnabled = true;
-            BtnEpubPath.IsEnabled = true;
-            BtnTxtPath.IsEnabled = true;
-            BtnSoundPath.IsEnabled = true;
-            BtnAddToList.IsEnabled = true;
-
-            TBEpubFilePath.IsEnabled = true;
-            TBTextPath.IsEnabled = true;
-            TBSoundPath.IsEnabled = true;
-            TBStoryName.IsEnabled = true;
-            TBChapterName.IsEnabled = true;
-
-            CBIsAList.IsEnabled = true;
-            CBOneChapter.IsEnabled = true;
         }
-        public async void Threadtemp(object? sender, EventArgs e)
-        {
-            StartNumber = await fun.GetStartNumberAsync();
-            RealNumber = await fun.GetRealNumberAsync();
-            //StartNumber = fun.StartNumber;
-            //RealNumber = fun.RealNumber;
-            LStartNummer.Content = StartNumber;
-            LRealNummer.Content = RealNumber;
-        }
+
         private async void OnTimerEvent(object? sender, EventArgs e)
         {
+            StartNumber = funV2.GetStartNumberAsync();
+            RealNumber = funV2.GetRealNumberAsync();
+            ChapterName = funV2.GetChapterNameAsync();
+            TimeLeft = funV2.GetTimeLeftAsync();
 
-
-            StartNumber = await fun.GetStartNumberAsync();
-            RealNumber = await fun.GetRealNumberAsync();
-            //StartNumber = fun.StartNumber;
-            //RealNumber = fun.RealNumber;
             LStartNummer.Content = (int)StartNumber;
             LRealNummer.Content = (int)RealNumber;
+            LChapterName.Content = ChapterName;
+            LTimeLeft.Content = TimeLeft;
         }
 
-        public void ListOfEpubsMethode(object sender, EventArgs e)
+        private async Task ListOfEpubsMethodeAsync(object sender, EventArgs e)
         {
-            fun.ListOfEpubs(epubList, epubFilePath, txtFilePath, soundFilePath);
+            await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath);
         }
 
         private void BtnEpubPath_Click(object sender, RoutedEventArgs e)
@@ -168,6 +197,12 @@ namespace MakeLydBog_V2_Wpf_App
             {
                 epubFilePath = openFileDialog.FileName;
                 TBEpubFilePath.Text = epubFilePath;
+                List<string> tempstringList = epubFilePath.Split(@"\").ToList();
+                string tempstringReplace = tempstringList.Last().Replace("_", " ").Trim().Split(".").ToList().First().Split("by ").ToList().First();
+                //List<string> tempstringList2 = tempstringReplace.Split(".").ToList();
+                //string tempstring2 = tempstringList2.First();
+                //tempstring2 = tempstringReplace.Split(@"by").ToList().First();
+                TBStoryName.Text = tempstringReplace;
             }
             else
             {
@@ -214,7 +249,7 @@ namespace MakeLydBog_V2_Wpf_App
 
         private void BtnAddToList_Click(object sender, RoutedEventArgs e)
         {
-            //bool isTrue = false;
+
             if (epubList.Count == 0)
             {
                 epubFilePath = TBEpubFilePath.Text;
@@ -248,6 +283,18 @@ namespace MakeLydBog_V2_Wpf_App
             }
 
 
+        }
+        private void BtnCheckStoryname_Click(object sender, RoutedEventArgs e)
+        {
+            if (TBEpubFilePath.Text != "Epub File Path")
+            {
+                GetContentFromEpub_V2 getContentFromEpub2 = new GetContentFromEpub_V2();
+                ListOfChapters = getContentFromEpub2.GetContentFromEpub_V2Metode(epubFilePath);
+                foreach (Chapter item in ListOfChapters)
+                {
+                    LVChapterTitlesNames.Items.Add(item.Title);
+                }
+            }
         }
         private void CBIsAList_Checked(object sender, RoutedEventArgs e)
         {
@@ -292,5 +339,8 @@ namespace MakeLydBog_V2_Wpf_App
             TBSoundPath.BorderBrush = System.Windows.Media.Brushes.Black;
 
         }
+
+
     }
 }
+

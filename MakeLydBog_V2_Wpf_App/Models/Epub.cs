@@ -8,7 +8,7 @@ namespace MakeLydBog_V2_Wpf_App.Models
 {
     public class Epub
     {
-        public string StoryName { get; set; }
-        public string EpubToExtratFileName { get; set; }
+        public string StoryName { get; set; } = string.Empty;
+        public string EpubToExtratFileName { get; set; } = string.Empty;
     }
 }

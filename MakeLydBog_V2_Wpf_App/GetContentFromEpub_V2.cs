@@ -15,7 +15,7 @@ namespace MakeLydBog_V2_Wpf_App
         {
 
         }
-        public List<Chapter> GetContentFromEpub_V2Metode(string BaseEpubFilePath, string EpubFilename)
+        public List<Chapter> GetContentFromEpub_V2Metode(/*string BaseEpubFilePath,*/ string EpubFilename)
         {
             List<List<string>> contentList = new List<List<string>>();
             //string epubFilePath = BaseEpubFilePath + EpubFilename + ".Epub";          
@@ -58,40 +58,38 @@ namespace MakeLydBog_V2_Wpf_App
                     //    }
                     //}
 
-                    Title = Title.Substring(Number);
-                    Console.WriteLine("         Title = " + Title);
-                    try
-                    {
+                    //Title = Title.Substring(Number);
+                    //Console.WriteLine("         Title = " + Title);
+                    //try
+                    //{
 
-                        if (key == "")
-                        {
-                            Console.WriteLine("         Does the title need a number (y/n)");
-                            key = Console.ReadLine();
-                        }
+                    //    if (key == "")
+                    //    {
+                    //        Console.WriteLine("         Does the title need a number (y/n)");
+                    //        key = Console.ReadLine();
+                    //    }
 
-                        if (key == "y")
-                        {
-                            //chapters1.Title = "Nr " + TitleCountNumber + ": " + chapterTitle;
-                            Title = "Chapter_" + count + " " + Title;
-                            count++;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
+                    //    if (key == "y")
+                    //    {
+                    //        //chapters1.Title = "Nr " + TitleCountNumber + ": " + chapterTitle;
+                    //        Title = "Chapter_" + count + " " + Title;
+                    //        count++;
+                    //    }
+                    //}
+                    //catch (Exception)
+                    //{
+                    //    throw;
+                    //}
 
                     Console.WriteLine("         " + Title);
                     Console.WriteLine("         Content");
                     string Content = GetContentFromEpub(item.Content);
-                    //Console.WriteLine(Content);
 
                     Chapter chapter = new Chapter();
 
                     chapter.Title = Title;
                     chapter.Content = Content;
                     chapters.Add(chapter);
-
                 }
                 else
                 {

@@ -17,7 +17,7 @@ namespace MakeLydBog_V2_Wpf_App
         {
             Directory.CreateDirectory(path + Storyname);
             bool b = false;
-            using (SpeechSynthesizer reader = new SpeechSynthesizer())
+            using (SpeechSynthesizer reader = new())
             {
                 //set some settings
                 reader.Volume = 100;
@@ -33,7 +33,7 @@ namespace MakeLydBog_V2_Wpf_App
 
 
 
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 reader.SetOutputToWaveStream(ms);
 
 

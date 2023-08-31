@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MakeLydBog_V2_Wpf_App;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,25 +7,31 @@ using System.Threading.Tasks;
 using VersOne.Epub;
 using MakeLydBog_V2_Wpf_App.Models;
 using System.IO;
-using System.ComponentModel;
 
 namespace MakeLydBog_V2_Wpf_App
 {
-    class Fungtions
+
+
+
+
+    class FungtionsV2
     {
         public int StartNumber;
         public int RealNumber;
-        public static void GetTimeLeft(int totalSeconds)
+        public string ChapterName;
+        public string TimeLeft;
+
+        public void GetTimeLeft(int totalSeconds)
         {
-            
+
             //totalSeconds = totalSeconds;
             int hours = totalSeconds / 3600;
             int minutes = (totalSeconds % 3600) / 60;
             int seconds = (totalSeconds % 3600) % 60;
 
             Console.WriteLine($"         Hours: {hours}, Minutes: {minutes}, Seconds: {seconds}");
-            string tempstring =  $"         Hours: {hours}, Minutes: {minutes}, Seconds: {seconds}";
-           
+            string tempstring = $"         Hours: {hours}, Minutes: {minutes}, Seconds: {seconds}";
+            TimeLeft = tempstring;
         }
 
         public void Start(string StoryName)
@@ -43,25 +50,35 @@ namespace MakeLydBog_V2_Wpf_App
             return ListOfChaptersCount;
         }
 
-        public void MakeTxtFile(List<Chapter> ListOfChapters, string TextFilePath, string StoryName)
+        public async Task MakeTxtFileAsync(List<Chapter> ListOfChapters, string TextFilePath, string StoryName)
         {
-            CreateTxtFiler createTxtFiles = new CreateTxtFiler();
+            CreateTxtFilerV2 createTxtFilesV2 = new CreateTxtFilerV2();
             foreach (Chapter item in ListOfChapters)
             {
-                createTxtFiles.CreateFile(item, TextFilePath, StoryName);
+                await createTxtFilesV2.CreateFileAsync(item, TextFilePath, StoryName);
             }
         }
+
         public int GetStartNumberAsync()
         {
             return StartNumber;
         }
+
         public int GetRealNumberAsync()
         {
             return RealNumber;
         }
-        public bool MakeMp3File(List<Chapter> ListOfChapters, int ListOfChaptersCount, string LydBogPath, string StoryName)
+        public string GetChapterNameAsync()
         {
-            CreateLydFiler createLydFile = new CreateLydFiler();
+            return ChapterName;
+        }
+        public string GetTimeLeftAsync()
+        {
+            return TimeLeft;
+        }
+        public async Task<bool> MakeMp3FileAsync(List<Chapter> ListOfChapters, int ListOfChaptersCount, string LydBogPath, string StoryName)
+        {
+            CreateLydFilerV2 createLydFileV2 = new CreateLydFilerV2();
 
             int number = ListOfChapters.Count;
             int number1 = ListOfChapters.Count;
@@ -69,25 +86,28 @@ namespace MakeLydBog_V2_Wpf_App
             RealNumber = number1;
 
             DateTime dateTime = DateTime.Now;
-            Console.WriteLine("         Start Tid    =" + dateTime);
-            Console.WriteLine("         ---------------------------");
+            Console.WriteLine("Start Tid    =" + dateTime);
+            Console.WriteLine("---------------------------");
+
             foreach (Chapter item in ListOfChapters)
             {
-                Console.WriteLine("         Title    " + item.Title);
-                Console.WriteLine("         Start Number      " + number);
+                Console.WriteLine("Title    " + item.Title);
+                ChapterName = item.Title;
+                Console.WriteLine("Start Number      " + number);
                 number1--;
                 RealNumber = number1;
-                Console.WriteLine("         Er nu             " + number1 + " Tilbage");
+                Console.WriteLine("Er nu             " + number1 + " Tilbage");
                 ListOfChaptersCount = ListOfChaptersCount - item.Content.Length;
-                Console.WriteLine("         Time Left");
-                GetTimeLeft(ListOfChaptersCount / 1600);//1500
+                Console.WriteLine("Time Left");
+                GetTimeLeft(ListOfChaptersCount / 1600); //1500
 
+                string filePath = Path.Combine(LydBogPath, StoryName, item.Title + ".mp3");
                 if (!File.Exists(LydBogPath + StoryName + @"\" + item.Title + ".mp3"))
                 {
-                    createLydFile.CreateSoundFile(item, StoryName, LydBogPath);
+                    await createLydFileV2.CreateSoundFileAsync(item, StoryName, LydBogPath);
                 }
 
-                Console.WriteLine("         ---------------------------");
+                Console.WriteLine("---------------------------");
             }
 
             DateTime dateTime1 = DateTime.Now;
@@ -95,12 +115,13 @@ namespace MakeLydBog_V2_Wpf_App
             int TimeInSeconds = time.Seconds;
             GetTimeLeft(TimeInSeconds);
 
-            Console.WriteLine("         Gæt Tid      =" + dateTime); //To Do Fix
-            Console.WriteLine("         Slut Tid     =" + dateTime1);
-            Console.WriteLine("         Tid taget    =" + (dateTime1 - dateTime));
+            Console.WriteLine("Gæt Tid      =" + dateTime); //To Do Fix
+            Console.WriteLine("Slut Tid     =" + dateTime1);
+            Console.WriteLine("Tid taget    =" + (dateTime1 - dateTime));
             return true;
         }
-        public bool ListOfEpubs(List<Epub> epubs, string EpubFilePath, string TextFilePath, string LydBogPath)
+
+        public async Task<bool> ListOfEpubsAsync(List<Epub> epubs, string EpubFilePath, string TextFilePath, string LydBogPath)
         {
             GetContentFromEpub_V2 getContentFromEpub2 = new GetContentFromEpub_V2();
 
@@ -109,23 +130,25 @@ namespace MakeLydBog_V2_Wpf_App
                 Start(item.StoryName);
                 List<Chapter> ListOfChapters = getContentFromEpub2.GetContentFromEpub_V2Metode(/*EpubFilePath,*/ item.EpubToExtratFileName);
                 int ListOfChaptersCount = ListOfChaptersCountMetode(ListOfChapters);
-                MakeTxtFile(ListOfChapters, TextFilePath, item.StoryName);
-                MakeMp3File(ListOfChapters, ListOfChaptersCount, LydBogPath, item.StoryName);
+                await MakeTxtFileAsync(ListOfChapters, TextFilePath, item.StoryName);
+                await MakeMp3FileAsync(ListOfChapters, ListOfChaptersCount, LydBogPath, item.StoryName);
                 End();
             }
             return true;
         }
-        public bool OneChapter(List<Chapter> ListOfChapters, string TextFilePath, string LydBogPath, string StoryName)
+
+        public async Task<bool> OneChapterAsync(List<Chapter> ListOfChapters, string TextFilePath, string LydBogPath, string StoryName)
         {
             int ListOfChaptersCount = ListOfChaptersCountMetode(ListOfChapters);
-            MakeTxtFile(ListOfChapters, TextFilePath, StoryName);
-            MakeMp3File(ListOfChapters, ListOfChaptersCount, LydBogPath, StoryName);
+            await MakeTxtFileAsync(ListOfChapters, TextFilePath, StoryName);
+            await MakeMp3FileAsync(ListOfChapters, ListOfChaptersCount, LydBogPath, StoryName);
             End();
             return true;
         }
 
         public void End()
         {
+
             Console.WriteLine("                           *          ");
             Console.WriteLine("                          ***         ");
             Console.WriteLine("                         *****        ");
