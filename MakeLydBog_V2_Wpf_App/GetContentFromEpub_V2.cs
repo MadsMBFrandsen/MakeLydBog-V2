@@ -15,7 +15,7 @@ namespace MakeLydBog_V2_Wpf_App
         {
 
         }
-        public List<Chapter> GetContentFromEpub_V2Metode(/*string BaseEpubFilePath,*/ string EpubFilename)
+        public List<Chapter> GetContentFromEpub_V2Metode(string EpubFilename, bool NeedsANumber, int StartOnNumber)
         {
             List<List<string>> contentList = new List<List<string>>();
             //string epubFilePath = BaseEpubFilePath + EpubFilename + ".Epub";          
@@ -41,45 +41,14 @@ namespace MakeLydBog_V2_Wpf_App
 
                 if (ForbiddenTitles(titletemp))
                 {
-                    //if (Number == 0 && IsTrue == false)
-                    //{
-                    //    Console.WriteLine("         " + Title);
-                    //    Console.WriteLine("         Skriv fra hvor Title begynder i tal");
-                    //    //While title is not a number (Char.IsDigit())
-                    //    try
-                    //    {
-                    //        Number = Convert.ToInt32(Console.ReadLine());
-                    //        IsTrue = true;
-                    //    }
-                    //    catch (Exception)
-                    //    {
-                    //        Console.WriteLine("         Error on Title select");
-                    //        throw;
-                    //    }
-                    //}
+                    if (NeedsANumber)
+                    {
+                        Title = "Chapter_ " + count + " " + Title.Substring(StartOnNumber);
+                        count++;
+                    }
 
-                    //Title = Title.Substring(Number);
-                    //Console.WriteLine("         Title = " + Title);
-                    //try
-                    //{
 
-                    //    if (key == "")
-                    //    {
-                    //        Console.WriteLine("         Does the title need a number (y/n)");
-                    //        key = Console.ReadLine();
-                    //    }
-
-                    //    if (key == "y")
-                    //    {
-                    //        //chapters1.Title = "Nr " + TitleCountNumber + ": " + chapterTitle;
-                    //        Title = "Chapter_" + count + " " + Title;
-                    //        count++;
-                    //    }
-                    //}
-                    //catch (Exception)
-                    //{
-                    //    throw;
-                    //}
+                   
 
                     Console.WriteLine("         " + Title);
                     Console.WriteLine("         Content");

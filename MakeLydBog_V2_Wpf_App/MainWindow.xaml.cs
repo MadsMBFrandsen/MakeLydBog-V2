@@ -17,7 +17,7 @@ namespace MakeLydBog_V2_Wpf_App
     {
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         GetContentFromEpub_V2 epub_V2;
-        Fungtions fun;
+        
         FungtionsV2 funV2;
         string epubFilePath = string.Empty;
         string txtFilePath = string.Empty;
@@ -26,6 +26,8 @@ namespace MakeLydBog_V2_Wpf_App
         List<Epub> epubList;
         List<Chapter> ListOfChapters;
 
+        int StartOnNumber = 0;
+        bool NeedANumber = false;
 
         int StartNumber = 0;
         int RealNumber = 0;
@@ -42,7 +44,7 @@ namespace MakeLydBog_V2_Wpf_App
         {
             //Instanses
             epub_V2 = new GetContentFromEpub_V2();
-            fun = new Fungtions();
+            
             funV2 = new FungtionsV2();
             epubList = new List<Epub>();
         }
@@ -97,17 +99,27 @@ namespace MakeLydBog_V2_Wpf_App
                 CBOneChapter.IsEnabled = false;
 
                 CreateFilePaths();
-                string NeedANumber = string.Empty;
-                string StartOn = string.Empty;
+                //string NeedANumber = string.Empty;
+                string StartOnText = string.Empty;
 
                 if (CBNeedANumber.IsChecked == true)
                 {
+                    NeedANumber = true;
+                    StartOnText = TBIsNumber.Text;
+                    if (Char.IsDigit(Convert.ToChar(StartOnText)))
+                    {
+                        StartOnNumber = Convert.ToInt32(StartOnText);
+                    }
 
                 }
-                if (CBStartOn.IsChecked == true)
-                {
-
-                }
+                //if (CBStartOn.IsChecked == true)
+                //{
+                //    StartOnText = TBIsNumber.Text;
+                //    if (Char.IsDigit(Convert.ToChar(StartOnText)))
+                //    {
+                //        StartOnNumber = Convert.ToInt32(StartOnText);
+                //    }
+                //}
 
                 if (CBOneChapter.IsChecked == true)
                 {
@@ -129,7 +141,7 @@ namespace MakeLydBog_V2_Wpf_App
                     dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
                     dispatcherTimer.Start();
 
-                    await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath);
+                    await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath, NeedANumber, StartOnNumber);
                 }
                 else
                 {
@@ -143,7 +155,7 @@ namespace MakeLydBog_V2_Wpf_App
 
                     epubList.Clear();
                     epubList.Add(epub);
-                    await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath);
+                    await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath, NeedANumber, StartOnNumber);
                 }
 
                 dispatcherTimer.Stop();
@@ -178,10 +190,10 @@ namespace MakeLydBog_V2_Wpf_App
             LTimeLeft.Content = TimeLeft;
         }
 
-        private async Task ListOfEpubsMethodeAsync(object sender, EventArgs e)
-        {
-            await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath);
-        }
+        //private async Task ListOfEpubsMethodeAsync(object sender, EventArgs e)
+        //{
+        //    await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath, NeedANumber, StartOnNumber);
+        //}
 
         private void BtnEpubPath_Click(object sender, RoutedEventArgs e)
         {
@@ -202,7 +214,7 @@ namespace MakeLydBog_V2_Wpf_App
                 //List<string> tempstringList2 = tempstringReplace.Split(".").ToList();
                 //string tempstring2 = tempstringList2.First();
                 //tempstring2 = tempstringReplace.Split(@"by").ToList().First();
-                TBStoryName.Text = tempstringReplace;
+                TBStoryName.Text = tempstringReplace.Trim();
             }
             else
             {
@@ -289,7 +301,7 @@ namespace MakeLydBog_V2_Wpf_App
             if (TBEpubFilePath.Text != "Epub File Path")
             {
                 GetContentFromEpub_V2 getContentFromEpub2 = new GetContentFromEpub_V2();
-                ListOfChapters = getContentFromEpub2.GetContentFromEpub_V2Metode(epubFilePath);
+                ListOfChapters = getContentFromEpub2.GetContentFromEpub_V2Metode(epubFilePath, false, 0);
                 foreach (Chapter item in ListOfChapters)
                 {
                     LVChapterTitlesNames.Items.Add(item.Title);
@@ -340,7 +352,20 @@ namespace MakeLydBog_V2_Wpf_App
 
         }
 
+        private void BtnClean_Click(object sender, RoutedEventArgs e)
+        {
+            LVStoryname.Items.Clear();
+            LVEpubFilePath.Items.Clear();
+            LVChapterTitlesNames.Items.Clear();
+            ListOfChapters.Clear();
 
+
+        }
+
+        private void CBNeedANumber_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

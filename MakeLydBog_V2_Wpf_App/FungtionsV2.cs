@@ -10,10 +10,6 @@ using System.IO;
 
 namespace MakeLydBog_V2_Wpf_App
 {
-
-
-
-
     class FungtionsV2
     {
         public int StartNumber;
@@ -30,7 +26,7 @@ namespace MakeLydBog_V2_Wpf_App
             int seconds = (totalSeconds % 3600) % 60;
 
             Console.WriteLine($"         Hours: {hours}, Minutes: {minutes}, Seconds: {seconds}");
-            string tempstring = $"         Hours: {hours}, Minutes: {minutes}, Seconds: {seconds}";
+            string tempstring = $"Hours: {hours}, Minutes: {minutes}, Seconds: {seconds}";
             TimeLeft = tempstring;
         }
 
@@ -121,14 +117,14 @@ namespace MakeLydBog_V2_Wpf_App
             return true;
         }
 
-        public async Task<bool> ListOfEpubsAsync(List<Epub> epubs, string EpubFilePath, string TextFilePath, string LydBogPath)
+        public async Task<bool> ListOfEpubsAsync(List<Epub> epubs, string EpubFilePath, string TextFilePath, string LydBogPath,bool NeedsANumber,int StartOnNumber)
         {
             GetContentFromEpub_V2 getContentFromEpub2 = new GetContentFromEpub_V2();
 
             foreach (Epub item in epubs)
             {
                 Start(item.StoryName);
-                List<Chapter> ListOfChapters = getContentFromEpub2.GetContentFromEpub_V2Metode(/*EpubFilePath,*/ item.EpubToExtratFileName);
+                List<Chapter> ListOfChapters = getContentFromEpub2.GetContentFromEpub_V2Metode(item.EpubToExtratFileName, NeedsANumber, StartOnNumber);
                 int ListOfChaptersCount = ListOfChaptersCountMetode(ListOfChapters);
                 await MakeTxtFileAsync(ListOfChapters, TextFilePath, item.StoryName);
                 await MakeMp3FileAsync(ListOfChapters, ListOfChaptersCount, LydBogPath, item.StoryName);

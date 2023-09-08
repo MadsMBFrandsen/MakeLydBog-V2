@@ -34,7 +34,7 @@
         <TextBox BorderBrush="Black" BorderThickness="2" Name="TBContent" TextWrapping="Wrap" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Grid.RowSpan="5" />
         <CheckBox BorderBrush="Black" BorderThickness="2" Name="CBIsAList" Content="Is a list" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="8" Grid.Row="1"/>
         <CheckBox BorderBrush="Black" BorderThickness="2" Name="CBOneChapter" Content="One Chapter" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="8" Grid.Row="1" Grid.ColumnSpan="2" Checked="IsChecked" Unchecked="IsUnChecked"/>
-        <CheckBox BorderBrush="Black" BorderThickness="2" Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="8" Grid.Row="1"/>
+        <!--<CheckBox BorderBrush="Black" BorderThickness="2" Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="8" Grid.Row="1"/>-->
         <Button  x:Name="BtnStart" Content="Start" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="8" Grid.Row="8" Padding="25,10" Click="BtnStart_Click"/>
         <Button Name="BtnEpubPath" Grid.Column="7" Grid.Row="2" Click="BtnEpubPath_Click" Margin="2,2,3,3">Select Epub</Button>
         <Button Name="BtnTxtPath" Grid.Column="7" Grid.Row="3" Margin="2,2,3,3" Click="BtnTxtPath_Click">Select Text</Button>
@@ -59,11 +59,11 @@
         <Label Grid.Column="6" Content="ChapterName" Grid.Row="7" VerticalAlignment="Top" />
         <Label Name="LChapterName" Grid.Column="6" Content="Na" Grid.Row="7" VerticalAlignment="Bottom"/>
         <Label Grid.Column="6" Content="TimeLeft" Grid.Row="8" VerticalAlignment="Top" />
-        <Label Name="LTimeLeft" Grid.Column="6" Content="Na" Grid.Row="8" VerticalAlignment="Bottom"/>
+        <Label Name="LTimeLeft" Grid.Column="6" Content="Na" Grid.Row="8" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
         <Label BorderBrush="Black" BorderThickness="2" Name="LError" Grid.Column="8" Content="Errors" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top"/>
-        <CheckBox BorderBrush="Black" BorderThickness="2" Name="CBNeedANumber" Grid.Column="5" Content="Need's a Number" HorizontalAlignment="Left" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Top"/>
-        <CheckBox BorderBrush="Black" BorderThickness="2" Name="CBStartOn" Grid.Column="5" Content="Start On" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Center"/>
-        <TextBox BorderBrush="Black" BorderThickness="2" MaxLength="1" Name="TBIsNumber" Grid.Column="6"  Grid.Row="4" VerticalAlignment="Center" Margin="0,5,0,0" ></TextBox>
+        <CheckBox BorderBrush="Black" BorderThickness="2" Name="CBNeedANumber" Grid.Column="5" Content="Need's a Number" HorizontalAlignment="Left" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Top" Checked="CBNeedANumber_Checked"/>
+        <TextBox  BorderBrush="Black" BorderThickness="2" MaxLength="1" Name="TBIsNumber" Grid.Column="5" Grid.Row="4" VerticalAlignment="Center" Margin="0,10,0,0" ></TextBox>
+        <Button Name="BtnClean" Content="Clean" Grid.Row="5" Grid.Column="0" Click="BtnClean_Click"/>
 
     </Grid>
 </Window>
