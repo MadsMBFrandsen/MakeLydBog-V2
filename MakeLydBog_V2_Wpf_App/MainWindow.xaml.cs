@@ -50,6 +50,8 @@ namespace MakeLydBog_V2_Wpf_App
         }
         private void CreateFilePaths()
         {
+            //If D:\Books Exist vælg denne stig
+
             //-----Create Folders
             //Directory.CreateDirectory(epubFilePath);
             Directory.CreateDirectory(txtFilePath);
