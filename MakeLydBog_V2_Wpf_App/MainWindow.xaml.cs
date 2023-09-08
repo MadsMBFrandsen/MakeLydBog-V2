@@ -1,4 +1,5 @@
 ﻿using MakeLydBog_V2_Wpf_App.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,7 @@ namespace MakeLydBog_V2_Wpf_App
     {
         System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         GetContentFromEpub_V2 epub_V2;
-        
+
         FungtionsV2 funV2;
         string epubFilePath = string.Empty;
         string txtFilePath = string.Empty;
@@ -25,6 +26,8 @@ namespace MakeLydBog_V2_Wpf_App
         string Storyname = string.Empty;
         List<Epub> epubList;
         List<Chapter> ListOfChapters;
+
+        string CurrentPath= string.Empty;
 
         int StartOnNumber = 0;
         bool NeedANumber = false;
@@ -44,14 +47,16 @@ namespace MakeLydBog_V2_Wpf_App
         {
             //Instanses
             epub_V2 = new GetContentFromEpub_V2();
-            
             funV2 = new FungtionsV2();
             epubList = new List<Epub>();
+            CurrentPath = Environment.CurrentDirectory;
+            Directory.CreateDirectory(CurrentPath+@"\Log");
+            Directory.CreateDirectory(CurrentPath+@"\Paths");
         }
         private void CreateFilePaths()
         {
             //If D:\Books Exist vælg denne stig
-
+           
             //-----Create Folders
             //Directory.CreateDirectory(epubFilePath);
             Directory.CreateDirectory(txtFilePath);
@@ -192,18 +197,23 @@ namespace MakeLydBog_V2_Wpf_App
             LTimeLeft.Content = TimeLeft;
         }
 
-        //private async Task ListOfEpubsMethodeAsync(object sender, EventArgs e)
-        //{
-        //    await funV2.ListOfEpubsAsync(epubList, epubFilePath, txtFilePath, soundFilePath, NeedANumber, StartOnNumber);
-        //}
 
         private void BtnEpubPath_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
             openFileDialog.Filter = "Epub files (*.epub)|*.epub";
-            openFileDialog.InitialDirectory = @"C:\Users\mads3170\OneDrive\Books\SoundBooks\Epub";
-            //openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            //openFileDialog.ShowDialog();
+
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            if (Directory.Exists(@"C:\Users\mads3170\OneDrive\Books\SoundBooks\Epub"))
+            {
+                openFileDialog.InitialDirectory = @"C:\Users\mads3170\OneDrive\Books\SoundBooks\Epub";
+            }
+            if (Directory.Exists(@"D:\Books"))
+            {
+                openFileDialog.InitialDirectory = @"D:\Books";
+            }
+
 
 
 
@@ -213,9 +223,6 @@ namespace MakeLydBog_V2_Wpf_App
                 TBEpubFilePath.Text = epubFilePath;
                 List<string> tempstringList = epubFilePath.Split(@"\").ToList();
                 string tempstringReplace = tempstringList.Last().Replace("_", " ").Trim().Split(".").ToList().First().Split("by ").ToList().First();
-                //List<string> tempstringList2 = tempstringReplace.Split(".").ToList();
-                //string tempstring2 = tempstringList2.First();
-                //tempstring2 = tempstringReplace.Split(@"by").ToList().First();
                 TBStoryName.Text = tempstringReplace.Trim();
             }
             else
@@ -231,6 +238,15 @@ namespace MakeLydBog_V2_Wpf_App
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             fbd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            if (Directory.Exists(@"C:\Users\mads3170\OneDrive\Books\SoundBooks\Epub"))
+            {
+                fbd.InitialDirectory = @"C:\Users\mads3170\OneDrive\Books\SoundBooks\Epub";
+            }
+            if (Directory.Exists(@"D:\Books"))
+            {
+                fbd.InitialDirectory = @"D:\Books";
+            }
 
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -249,6 +265,15 @@ namespace MakeLydBog_V2_Wpf_App
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             fbd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            if (Directory.Exists(@"C:\Users\mads3170\OneDrive\Books\SoundBooks\Epub"))
+            {
+                fbd.InitialDirectory = @"C:\Users\mads3170\OneDrive\Books\SoundBooks\Epub";
+            }
+            if (Directory.Exists(@"D:\Books"))
+            {
+                fbd.InitialDirectory = @"D:\Books";
+            }
 
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -280,7 +305,7 @@ namespace MakeLydBog_V2_Wpf_App
                 if (epubList.Last().EpubToExtratFileName == TBEpubFilePath.Text || TBEpubFilePath.Text == null || TBEpubFilePath.Text == "" ||
                 epubList.Last().StoryName == TBStoryName.Text || TBStoryName.Text == null || TBStoryName.Text == "")
                 {
-                    //On Punching Gods and Absentee Dads
+                    
                 }
                 else
                 {
