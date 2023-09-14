@@ -117,14 +117,14 @@ namespace MakeLydBog_V2_Wpf_App
             return true;
         }
 
-        public async Task<bool> ListOfEpubsAsync(List<Epub> epubs, string EpubFilePath, string TextFilePath, string LydBogPath,bool NeedsANumber,int StartOnNumber)
+        public async Task<bool> ListOfEpubsAsync(List<Epub> epubs, string EpubFilePath, string TextFilePath, string LydBogPath, bool NeedsANumber, int StartOnNumber)
         {
             GetContentFromEpub_V2 getContentFromEpub2 = new GetContentFromEpub_V2();
 
             foreach (Epub item in epubs)
             {
                 Start(item.StoryName);
-                List<Chapter> ListOfChapters = getContentFromEpub2.GetContentFromEpub_V2Metode(item.EpubToExtratFileName, NeedsANumber, StartOnNumber);
+                List<Chapter> ListOfChapters = getContentFromEpub2.GetContentFromEpub_V2Metode(item.EpubToExtratFileName, NeedsANumber, StartOnNumber, 0, 0,false);
                 int ListOfChaptersCount = ListOfChaptersCountMetode(ListOfChapters);
                 await MakeTxtFileAsync(ListOfChapters, TextFilePath, item.StoryName);
                 await MakeMp3FileAsync(ListOfChapters, ListOfChaptersCount, LydBogPath, item.StoryName);
@@ -132,7 +132,21 @@ namespace MakeLydBog_V2_Wpf_App
             }
             return true;
         }
+        public async Task<bool> EpubAsync(List<Epub> epubs, string EpubFilePath, string TextFilePath, string LydBogPath, bool NeedsANumber, int StartOnNumber, int StartNumber, int EndNumber)
+        {
+            GetContentFromEpub_V2 getContentFromEpub2 = new GetContentFromEpub_V2();
 
+            Start(epubs.First().StoryName);
+            List<Chapter> ListOfChapters = getContentFromEpub2.GetContentFromEpub_V2Metode(epubs.First().EpubToExtratFileName, NeedsANumber, StartOnNumber, StartNumber, EndNumber, false);
+            int ListOfChaptersCount = ListOfChaptersCountMetode(ListOfChapters);
+            await MakeTxtFileAsync(ListOfChapters, TextFilePath, epubs.First().StoryName);
+            await MakeMp3FileAsync(ListOfChapters, ListOfChaptersCount, LydBogPath, epubs.First().StoryName);
+            End();
+
+
+
+            return true;
+        }
         public async Task<bool> OneChapterAsync(List<Chapter> ListOfChapters, string TextFilePath, string LydBogPath, string StoryName)
         {
             int ListOfChaptersCount = ListOfChaptersCountMetode(ListOfChapters);
