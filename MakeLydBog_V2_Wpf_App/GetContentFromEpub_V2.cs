@@ -15,7 +15,7 @@ namespace MakeLydBog_V2_Wpf_App
         {
 
         }
-        public List<Chapter> GetContentFromEpub_V2Metode(string EpubFilename, bool NeedsANumber, int StartOnNumber)
+        public List<Chapter> GetContentFromEpub_V2Metode(string EpubFilename, bool NeedsANumber, int StartOnNumber, int StartNumber, int EndNumber, bool getepub)
         {
             List<List<string>> contentList = new List<List<string>>();
             //string epubFilePath = BaseEpubFilePath + EpubFilename + ".Epub";          
@@ -30,6 +30,7 @@ namespace MakeLydBog_V2_Wpf_App
             int Number = 0;
             bool IsTrue = false;
             int count = 1; //hvis chapter Titlen ikke inde holder et number
+            int count2 = 1;
             string key = string.Empty;
             foreach (EpubLocalTextContentFile item in epubBook.ReadingOrder)
             {
@@ -48,7 +49,7 @@ namespace MakeLydBog_V2_Wpf_App
                     }
 
 
-                   
+
 
                     Console.WriteLine("         " + Title);
                     Console.WriteLine("         Content");
@@ -58,7 +59,26 @@ namespace MakeLydBog_V2_Wpf_App
 
                     chapter.Title = Title;
                     chapter.Content = Content;
-                    chapters.Add(chapter);
+
+
+                    if (getepub)
+                    {
+                        chapters.Add(chapter);
+                    }
+                    else
+                    {
+                        if (chapter.Content.Length > 300)
+                        {
+                            if ((count2 >= StartNumber && count2 <= EndNumber) || (StartNumber == 0 && EndNumber == 0) || EndNumber == 0 && StartNumber <= count2)
+                            {
+                                chapters.Add(chapter);
+                            }
+                        }
+                        
+                    }
+
+
+                    count2++;
                 }
                 else
                 {
@@ -102,6 +122,7 @@ namespace MakeLydBog_V2_Wpf_App
 
             return istrue;
         }
+
 
         internal string GetTitleFromEpub(string EpubTitle)
         {

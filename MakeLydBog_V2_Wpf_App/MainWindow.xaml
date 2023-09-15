@@ -31,7 +31,7 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <TextBox BorderBrush="Black" BorderThickness="2" Name="TBContent" TextWrapping="Wrap" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Grid.RowSpan="5" />
+        <TextBox AcceptsReturn="True" BorderBrush="Black" BorderThickness="2" Name="TBContent" TextWrapping="Wrap" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Grid.RowSpan="5" />
         <CheckBox BorderBrush="Black" BorderThickness="2" Name="CBIsAList" Content="Is a list" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="8" Grid.Row="1"/>
         <CheckBox BorderBrush="Black" BorderThickness="2" Name="CBOneChapter" Content="One Chapter" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="8" Grid.Row="1" Grid.ColumnSpan="2" Checked="IsChecked" Unchecked="IsUnChecked"/>
         <!--<CheckBox BorderBrush="Black" BorderThickness="2" Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="8" Grid.Row="1"/>-->
@@ -62,8 +62,12 @@
         <Label Name="LTimeLeft" Grid.Column="6" Content="Na" Grid.Row="8" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
         <Label BorderBrush="Black" BorderThickness="2" Name="LError" Grid.Column="8" Content="Errors" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top"/>
         <CheckBox BorderBrush="Black" BorderThickness="2" Name="CBNeedANumber" Grid.Column="5" Content="Need's a Number" HorizontalAlignment="Left" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Top" Checked="CBNeedANumber_Checked"/>
-        <TextBox  BorderBrush="Black" BorderThickness="2" MaxLength="1" Name="TBIsNumber" Grid.Column="5" Grid.Row="4" VerticalAlignment="Center" Margin="0,10,0,0" ></TextBox>
+        <TextBox  BorderBrush="Black" BorderThickness="2" MaxLength="2" Name="TBIsNumber" Grid.Column="5" Grid.Row="4" VerticalAlignment="Center" Margin="0,10,0,0" ></TextBox>
         <Button Name="BtnClean" Content="Clean" Grid.Row="5" Grid.Column="0" Click="BtnClean_Click"/>
+        <TextBox x:Name="TBStartNumber" MaxLength="2" Grid.Column="5" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Bottom" KeyDown="TBStartNumberKeyDown" />
+        <TextBox x:Name="TBEndNumber" MaxLength="2" Grid.Column="6" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Bottom" />
+        <Label  Grid.Column="5" Content="StartNumber" Grid.Row="5" VerticalAlignment="Top"/>
+        <Label Grid.Column="6" Content="EndNumber" Grid.Row="5" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
