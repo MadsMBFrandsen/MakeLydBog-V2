@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VersOne.Epub;
 using MakeLydBog_V2_Wpf_App.Models;
 using System.IO;
+using System.Windows;
 
 namespace MakeLydBog_V2_Wpf_App
 {
@@ -26,7 +27,7 @@ namespace MakeLydBog_V2_Wpf_App
             int seconds = (totalSeconds % 3600) % 60;
 
             Console.WriteLine($"         Hours: {hours}, Minutes: {minutes}, Seconds: {seconds}");
-            string tempstring = $"Hours: {hours}, Minutes: {minutes}, Seconds: {seconds}";
+            string tempstring = $"H: {hours}, M: {minutes}, S: {seconds}";
             TimeLeft = tempstring;
         }
 
@@ -144,6 +145,14 @@ namespace MakeLydBog_V2_Wpf_App
 
         public void End()
         {
+            //string messageBoxText = "Sound Files Is Converted";
+            //string caption = "Epub Done";
+            //MessageBoxButton button = MessageBoxButton.YesNoCancel;
+            //MessageBoxImage icon = MessageBoxImage.Warning;
+            //MessageBoxResult result;
+
+            //result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+            
 
             Console.WriteLine("                           *          ");
             Console.WriteLine("                          ***         ");

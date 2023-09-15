@@ -182,6 +182,7 @@ namespace MakeLydBog_V2_Wpf_App
                 CBIsAList.IsEnabled = true;
                 CBOneChapter.IsEnabled = true;
             }
+           System.Windows.Forms.MessageBox.Show("Sound Files Is Converted");
         }
 
         private async void OnTimerEvent(object? sender, EventArgs e)
