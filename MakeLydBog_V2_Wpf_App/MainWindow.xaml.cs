@@ -53,6 +53,9 @@ namespace MakeLydBog_V2_Wpf_App
             CurrentPath = Environment.CurrentDirectory;
             Directory.CreateDirectory(CurrentPath + @"\Log");
             Directory.CreateDirectory(CurrentPath + @"\Paths");
+
+
+            //BtnClean.IsEnabled = false;
         }
         private void CreateFilePaths()
         {
@@ -447,8 +450,12 @@ namespace MakeLydBog_V2_Wpf_App
             LVStoryname.Items.Clear();
             LVEpubFilePath.Items.Clear();
             LVChapterTitlesNames.Items.Clear();
-            ListOfChapters.Clear();
-
+            if (ListOfChapters != null)
+            {
+                ListOfChapters.Clear();
+            }
+            
+            TBContent.Text = string.Empty;
 
         }
 
